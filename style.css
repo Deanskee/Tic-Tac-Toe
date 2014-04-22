@@ -1,0 +1,36 @@
+.innerBoard {
+	float:left;
+	border: 3px solid black;
+	width: 100px;
+	height: 100px;
+	background-color: red;
+	color: white;
+	font-size: 75pt;
+	text-align: center;
+
+}
+
+.cell {
+	height:100px;
+	width:100px;
+	margin: 5px;
+	background-color: blue;
+	position: relative;
+}
+
+.container {
+	background-color: red;
+	width: 330px;
+	height:330px;
+	position: absolute;
+
+}
+
+.XbackGround {
+	background-color: blue;
+}
+
+body {
+	background-color: #777;
+}
+

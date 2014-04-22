@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html x-ng-app='ticApp'>
+	<head>
+		<link rel = "stylesheet" href="style.css" />
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"> </script>
+		<script type="text/javascript" src="tic_tac_toe.js"></script>
+	</head>
+		<body x-ng-controller="TicController">
+		
+			<h1>Tic Tac Toe</h1>
+			<h1>{{rows}}</h1>
+	<div class="container">
+		<div class="innerBoard" x-ng-repeat="x in rows track by $index">		
+			<div class="cell" x-ng-repeat="col in x track by $index" x-ng-click="clicker($parent.$index, $index);">
+
+			</div>
+		</div>
+	</div>
+		</body>
+
+
+</html>
+
