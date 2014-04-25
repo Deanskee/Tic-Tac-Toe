@@ -2,16 +2,25 @@
 <html x-ng-app='ticApp'>
 	<head>
 		<link rel = "stylesheet" href="style.css" />
+		<link href='http://fonts.googleapis.com/css?family=Trade+Winds' rel='stylesheet' type='text/css'>
 		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"> </script>
 		<script type="text/javascript" src="tic_tac_toe.js"></script>
+		
 	</head>
 		<body x-ng-controller="TicController">
 		
 			<h1>Tic Tac Toe</h1>
-			<h1>{{rows}}</h1>
+			<div id="blanka"></div>
+			<div id="ryu"></div>
+			<p id="winAlert"></p>
+			<!-- <div class="player1">Player X <input type="text" x-ng-model="userPlayer1">{{userPlayer1}}</div> -->
+			
+			<!-- <button><div class="leftPic"></div><span>Choose Fighter</span><div class="rightPic"></div></button> -->
+
 	<div class="container">
+
 		<div class="innerBoard" x-ng-repeat="x in rows track by $index">		
-			<div class="cell" x-ng-repeat="col in x track by $index" x-ng-click="clicker($parent.$index, $index);">
+			<div class="cell" x-ng-repeat="col in x track by $index" x-ng-click="checkPlayer($parent.$index, $index);" x-ng-bind="content[$parent.$index][$index];" x-ng-class="highLight($parent.$index, $index);">
 
 			</div>
 		</div>

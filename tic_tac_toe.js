@@ -1,123 +1,146 @@
-// // functions: 
-// // document.getElementById('container').onclick = function() {
-// // 	this.style.border = "5px solid blue";
-// // 	this.style.backgroundImage = "url('http://sereedmedia...')";
-// // 	this.innerHTML = "Wilson Cat";
-// // 	this.style.color = "purple";
-// // 	this.style.height = "900px";
-// // };
-
-// // document.getElementById('container').addEventListener('click', function() {
-
-// 	// same thing as the .onclick. but you can have multiple addEventListeners on one thing
-// 	// but .onclick you couldnt
-
-// 	// function to grab every div
-// 	// document.getElementByTagName('div')[2].style.border = "5px solid lime";
-// 	var win = false;
-// 	var winningBoard=[" ", " ", " "], [" ", " ", " "], [" ", " ", " "];
-// 	var playerONe=false
-// 	var playerTwo=false
-
-
+// var blankBoard = [[0, 0, 0],[0, 0, 0], [0, 0, 0]];
 var turn = true;
-var ticApp = angular.module('ticApp', [])
+
+var ticApp = angular.module('ticApp', []);
 
 // uses true to change cells for each player x and o's
-// ticApp.controller('TicController', function($scope) {
-ticApp.controller('TicController', function($scope) {
+ticApp.controller('TicController', function($scope,$timeout) {
 
-
-// function TicController($scope) {
 	$scope.rows = [[0, 0, 0],[0, 0, 0], [0, 0, 0]];
 	$scope.turn = true;
-	$scope.clicker = function (r,c) { 
-		if ($scope.rows[r][c]=="") {
-			if ($scope.turn == true) {
-				$scope.rows[r][c]='X';
-				$scope.turn = false; }
-			else {
-				
-				$scope.rows[r][c]='O';
-				$scope.turn = true;
-			
-			};
-		}
-		else {
-				$scope.rows[r][c];
-			}
+	$scope.content=[['','',''],['','',''],['','','']];
+	$scope.win = false;
+	$scope.tie = 0;
 
-	$scope.checkWinner(r,c);
-	}
+	$scope.highLight = function(row, column) {
+		if ($scope.rows[row][column]==2) {
+			return "highLight";
+		} 
+	};
 
-
-
-$scope.checkWinner = function(r, c)
-		{
+	$scope.checkPlayer = function(row, column)
+	{
+		if ($scope.win==false){
+			if ($scope.rows[row][column]==0) {
 				if (turn == true)
 				{
-					$scope.rows[r][c] = 1;
-					value = 1;
+					$scope.rows[row][column] = 1;
+					$scope.content[row][column]='X';
 					turn = false;
 					console.log("yes!");
+					$scope.tie+=1;
+
+					playerWon();
+
 				}
 				else
 				{
-					$scope.rows[r][c] = -1;
-					value = -1;
+					$scope.rows[row][column] = -1;
+					$scope.content[row][column]='O';
 					turn=true;
 					console.log("Fuck ya!");
+					$scope.tie+=1;
+
+					playerWon();
 				}
-		};
-});
+			}
+		}
+	};
 
-		
-		
+// Test various win conditions
+function playerWon() {
+	for (var i=0; i<3; i++) {
+		// Won by row?
+		if (($scope.rows[0][i] + $scope.rows[1][i] + $scope.rows[2][i]) == 3){
+			$scope.win=true;
+			// alert("Blanka Wins by X!");
+			// break;
+			$timeout(function() {$scope.resetTime();},1500);
+			document.getElementById("winAlert").innerHTML="Blanka Wins!";
+			
+		}
+
+		// Won by column
+		if (($scope.rows[i][0] + $scope.rows[i][1] + $scope.rows[i][2]) == 3){
+			$scope.win=true; 
+			$timeout(function() {$scope.resetTime();},1500);
+			document.getElementById("winAlert").innerHTML="Blanka Wins!";
+		}
+		// Won by row O
+		if (($scope.rows[0][i] + $scope.rows[1][i] + $scope.rows[2][i]) == -3){
+			$scope.win=true;
+			$timeout(function() {$scope.resetTime();},1500);
+			document.getElementById("winAlert").innerHTML="Ryu Wins!";
+		}
+		// Won by column O
+		if (($scope.rows[i][0] + $scope.rows[i][1] + $scope.rows[i][2]) == -3){
+			$scope.win=true; 
+			$timeout(function() {$scope.resetTime();},1500);
+			document.getElementById("winAlert").innerHTML="Ryu Wins!";
+		}
+	}
+
+	// diagonal win X
+	if (($scope.rows[0][0] + $scope.rows[1][1] + $scope.rows[2][2]) == 3){
+		$scope.win=true;
+		$timeout(function() {$scope.resetTime();},1500);
+		document.getElementById("winAlert").innerHTML="Blanka Wins!";
+	}
+	// diagonal win O
+	if (($scope.rows[0][0] + $scope.rows[1][1] + $scope.rows[2][2]) == -3){
+		$scope.win=true;
+		$timeout(function() {$scope.resetTime();},1500);
+		document.getElementById("winAlert").innerHTML="Ryu Wins!";
+	}
+	// diagonal win X
+	if (($scope.rows[0][2] + $scope.rows[1][1] + $scope.rows[2][0]) == 3){
+		$scope.win=true;
+		$timeout(function() {$scope.resetTime();},1500);
+		document.getElementById("winAlert").innerHTML="Blanka Wins!";
+	}
+	if (($scope.rows[0][2] + $scope.rows[1][1] + $scope.rows[2][0]) == -3){
+		$scope.win=true;
+		$timeout(function() {$scope.resetTime();},1500);
+		document.getElementById("winAlert").innerHTML="Ryu Wins!";
+	}
+	if ($scope.tie==9 && $scope.win==false){
+		$timeout(function() {$scope.resetTime();},1500);
+		document.getElementById("winAlert").innerHTML="Tie GamePlay Again!";
+	}
+};
+
+	$scope.resetTime= function() {
+		$scope.rows = [[0, 0, 0],[0, 0, 0], [0, 0, 0]];
+		$scope.turn = true;
+		$scope.content=[['','',''],['','',''],['','','']];
+		$scope.win = false;
+		$scope.tie = 0;
+		document.getElementById("winAlert").innerHTML="";
+	}
+
+})
 
 
 
-// ticApp.controller('TicController', function($scope) {
-// 	$scope.rows = [[0, 0, 0],[0, 0, 0], [0, 0, 0]];
-// 	$scope.clicker = function (RowIndex, cellIndex) {
-// 		$scope.rows[RowIndex][cellIndex]='X';
-// 		console.log(rows);
-// 	};				
-		
- 			
-// });
 
-// 	var play = function(player, opp) {
-// 		var index;
-// 		player.play(function(move) {
-// 			index=move;
-// 			board.board[index][1] = player.mark;
-// 			if (board.Winner()== undefined||)
-// 		}
-// 	}
+// display win/lose with a hidden div then use ng-style to display on js
+// var display result as inline-block
+		// $watch can show how many times you move on tic tac toe board 
+		// $watch on gameboard and trigger after 4 or 5th move
+		// watching old event and comparing with new event
+	// app.controller('TicController', function($scope) {
+	// 	$scope.name = "";
 
-// // box is clicked. Determine which player has clicked
-// function TicController($scope, )
-// var TicTacToe = angular.module('TicTacToe', []);
-// TicTacToe.controller('TicTacToeController', function ($scope) {
-// $scope.row =
-// [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
-// })
-// var p1=false;
-// var p2=false;
-// if (!p1 || !p2) {
-// if (rows.onClick == row) {
-// p1answer = "X";
-// p1 = true;
-// display();
-// }
-// else if (rows.onClick ==row) {
-// p2answer = "O";
-// p2 = true;
-// display ()
-// }
-// }
+	// 	$scope.updated = -2;
+	// })
+	// 
+	// 	$scope.$watch('name', function() {
+	// 		$scope.updated++;
+	// 		console.log($scope.updated + " button");
+	// 	})
 
-	// for (var i = 0; i < deansLoop.length; i++) {
-	// 	deansLoop[i].onclick = function() {
-	// 		this.style.backgroundColor = "blue";
-	// }};
+// 1. add mid 2 scripts
+// 2. all references to $scope?
+// change to $scope.game
+// 3. make sure firebase is added as a dependency
+// 4. wherever data changes to $scope to $save (Player 2)
