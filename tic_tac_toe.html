@@ -4,23 +4,30 @@
 		<link rel = "stylesheet" href="style.css" />
 		<link href='http://fonts.googleapis.com/css?family=Trade+Winds' rel='stylesheet' type='text/css'>
 		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"> </script>
+		<script src="https://cdn.firebase.com/v0/firebase.js"></script>
+		<script src="https://cdn.firebase.com/libs/angularfire/0.6.0/angularfire.min.js"></script>
 		<script type="text/javascript" src="tic_tac_toe.js"></script>
 		
 	</head>
 		<body x-ng-controller="TicController">
 		
 			<h1>Tic Tac Toe</h1>
-			<div id="blanka"></div>
-			<div id="ryu"></div>
-			<p id="winAlert"></p>
-			<!-- <div class="player1">Player X <input type="text" x-ng-model="userPlayer1">{{userPlayer1}}</div> -->
+			<div class="player-left">
+				<div class="score">{{game.xWins}}</div>
+				<div id="blanka"></div>
+			</div>
 			
-			<!-- <button><div class="leftPic"></div><span>Choose Fighter</span><div class="rightPic"></div></button> -->
-
+			<div class="player-right">
+				<div class="score">{{game.oWins}}</div>
+				<div id="ryu"></div>
+			</div>
+			
+			<p id="winAlert"></p>
+		
 	<div class="container">
 
-		<div class="innerBoard" x-ng-repeat="x in rows track by $index">		
-			<div class="cell" x-ng-repeat="col in x track by $index" x-ng-click="checkPlayer($parent.$index, $index);" x-ng-bind="content[$parent.$index][$index];" x-ng-class="highLight($parent.$index, $index);">
+		<div class="innerBoard" x-ng-repeat="x in game.rows track by $index">		
+			<div class="cell" x-ng-repeat="col in x track by $index" x-ng-click="checkPlayer($parent.$index, $index);" x-ng-bind="game.content[$parent.$index][$index];" x-ng-class="highLight($parent.$index, $index);">
 
 			</div>
 		</div>
